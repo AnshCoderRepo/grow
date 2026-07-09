@@ -22,6 +22,19 @@ export default function Summary({ importSummary }: SummaryProps) {
         </p>
       </div>
 
+      {importSummary.partialError && (
+        <div className="border border-amber-200 bg-amber-50/50 rounded-xl p-4 flex gap-3 items-start">
+          <AlertTriangle className="h-5 w-5 text-amber-500 shrink-0 mt-0.5" />
+          <div>
+            <h4 className="text-sm font-bold text-amber-800">Import Incomplete</h4>
+            <p className="text-xs text-amber-700 mt-1">
+              The import was halted early due to an unexpected issue: <span className="font-mono bg-amber-100 px-1 rounded">{importSummary.partialError}</span>.
+              However, we saved the leads that were successfully processed up to that point.
+            </p>
+          </div>
+        </div>
+      )}
+
       {/* Statistics */}
       <div className="grid grid-cols-3 gap-4">
         <div className="p-4 bg-slate-50 border border-slate-100 rounded-xl text-center">

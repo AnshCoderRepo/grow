@@ -30,4 +30,5 @@ export interface ImportSummary {
     rowData: Record<string, string>;
   }>;
   fieldMappings: Record<string, string>; // Maps CRM fields to CSV headers
+  partialError?: string;
 }

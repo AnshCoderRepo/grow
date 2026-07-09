@@ -69,7 +69,10 @@ export async function POST(req: NextRequest) {
     // Sleep utility to help respect free-tier rate limits (e.g., 15 RPM)
     const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
-    for (let i = 0; i < rows.length; i += BATCH_SIZE) {
+    let partialError: string | undefined = undefined;
+
+    try {
+      for (let i = 0; i < rows.length; i += BATCH_SIZE) {
       if (i > 0) {
         await sleep(4200); // ~4.2s delay between batches (keeps it under 15 requests per minute)
       }
@@ -202,6 +205,10 @@ Respond with ONLY a JSON code block. No explanation, no extra text. Example form
           }))
         );
       }
+      }
+    } catch (unexpectedErr: any) {
+      console.error('Unexpected error during batch processing:', unexpectedErr);
+      partialError = unexpectedErr.message || 'Unexpected processing error';
     }
 
     const summary: ImportSummary = {
@@ -211,6 +218,7 @@ Respond with ONLY a JSON code block. No explanation, no extra text. Example form
       records,
       skippedRecords,
       fieldMappings: customMappings ?? autoMapFields(headers),
+      partialError,
     };
 
     return NextResponse.json(summary);

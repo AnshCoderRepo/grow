@@ -1,36 +1,69 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# GrowEasy CRM
+
+GrowEasy CRM is a modern, lightweight customer relationship management (CRM) dashboard built with Next.js, Tailwind CSS, and the Google Gemini API. It features an intelligent **AI-Powered CSV Importer** that can automatically map, clean, and extract leads from unstructured CSV files, making lead management seamless and effortless.
+
+## Features
+
+- **Modern Dashboard**: A clean, responsive, and beautiful UI for managing leads, built with React and Tailwind CSS.
+- **AI-Powered CSV Import**: Upload raw CSV files of leads. The system uses Gemini (Generative AI) to intelligently map columns (even if they don't exactly match your CRM headers), clean up data, and validate required fields.
+- **Graceful Error Handling**: Automatically handles rate limits and API crashes. If the import hits a snag halfway through, it saves the successfully processed leads so no progress is lost.
+- **Mock Fallback**: If the Gemini API key is missing or quota is exceeded, the app gracefully falls back to a heuristic-based mock extraction so you are never blocked.
+- **Real-time Statistics**: Dashboard stats automatically update to reflect your newly imported data and skipped records.
+
+## Tech Stack
+
+- **Framework**: [Next.js](https://nextjs.org/) (App Router, React)
+- **Styling**: [Tailwind CSS](https://tailwindcss.com/)
+- **Icons**: [Lucide React](https://lucide.dev/)
+- **CSV Parsing**: [PapaParse](https://www.papaparse.com/)
+- **AI Integration**: [@google/generative-ai](https://www.npmjs.com/package/@google/generative-ai) (Gemini 2.0 Flash)
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- Node.js (v18 or higher recommended)
+- npm or yarn
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Installation
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. **Clone the repository** (if applicable) and navigate to the project directory:
+   ```bash
+   cd grow
+   ```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+2. **Install dependencies**:
+   ```bash
+   npm install
+   ```
 
-## Learn More
+3. **Set up Environment Variables**:
+   Create a `.env` file in the root directory and add your Google Gemini API key:
+   ```env
+   GEMINI_API_KEY=your_gemini_api_key_here
+   ```
+   *(If you don't provide an API key, the app will still work using the built-in mock heuristic mapper).*
 
-To learn more about Next.js, take a look at the following resources:
+4. **Start the development server**:
+   ```bash
+   npm run dev
+   ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+5. **Open the app**:
+   Navigate to [http://localhost:3000](http://localhost:3000) in your browser.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Usage
 
-## Deploy on Vercel
+1. Click on **"Import CSV"** in the top right corner of the dashboard.
+2. Drag and drop your CSV file or select one from your computer.
+3. Review the preview and adjust any column mappings if necessary.
+4. Click **"Confirm Import"** to let the AI process your leads.
+5. Review the summary of successfully imported vs. skipped leads, then click **"Done"** to see them on your dashboard!
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Contributing
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Contributions, issues, and feature requests are welcome! Feel free to check the issues page.
+
+## License
+
+This project is open-source and available under the [MIT License](LICENSE).
