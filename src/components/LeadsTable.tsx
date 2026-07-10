@@ -24,13 +24,23 @@ export default function LeadsTable({
   // Filter leads based on query
   const filteredLeads = leads.filter(lead => {
     const q = searchQuery.toLowerCase();
+    const phoneFull = (lead.country_code + lead.mobile_without_country_code).toLowerCase();
     return (
       lead.name.toLowerCase().includes(q) ||
       lead.email.toLowerCase().includes(q) ||
-      lead.phone.toLowerCase().includes(q) ||
+      phoneFull.includes(q) ||
       lead.company.toLowerCase().includes(q)
     );
   });
+
+  const formatDate = (isoString: string) => {
+    try {
+      const d = new Date(isoString);
+      return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit' });
+    } catch {
+      return isoString;
+    }
+  };
 
   return (
     <div className="bg-white border border-slate-200/80 rounded-xl shadow-sm flex flex-col flex-1 overflow-hidden">
@@ -101,36 +111,41 @@ export default function LeadsTable({
                       )}
                       {lead.name}
                     </td>
-                    <td className="py-3.5 px-6 text-slate-500 font-medium">{lead.email}</td>
-                    <td className="py-3.5 px-6 text-slate-500 font-mono font-medium">{lead.phone}</td>
-                    <td className="py-3.5 px-6 text-slate-400 font-medium">{lead.dateCreated}</td>
-                    <td className="py-3.5 px-6 text-slate-500 font-medium">{lead.company}</td>
+                    <td className="py-3.5 px-6 text-slate-500 font-medium">{lead.email || '—'}</td>
+                    <td className="py-3.5 px-6 text-slate-500 font-mono font-medium">{lead.country_code} {lead.mobile_without_country_code}</td>
+                    <td className="py-3.5 px-6 text-slate-400 font-medium">{formatDate(lead.created_at)}</td>
+                    <td className="py-3.5 px-6 text-slate-500 font-medium">{lead.company || '—'}</td>
                     <td className="py-3.5 px-6">
-                      {lead.status === 'Sale Done' && (
+                      {lead.crm_status === 'SALE_DONE' && (
                         <span className="inline-block text-[10px] font-bold px-2.5 py-0.5 bg-[#EBF3FC] text-blue-600 rounded-full">
                           Sale Done
                         </span>
                       )}
-                      {lead.status === 'Not Dialed' && (
+                      {lead.crm_status === 'DID_NOT_CONNECT' && (
                         <span className="inline-block text-[10px] font-bold px-2.5 py-0.5 bg-slate-100 text-slate-500 rounded-full">
                           Not Dialed
                         </span>
                       )}
-                      {lead.status === 'Good Lead' && (
+                      {lead.crm_status === 'GOOD_LEAD_FOLLOW_UP' && (
                         <span className="inline-block text-[10px] font-bold px-2.5 py-0.5 bg-[#E6F4EA] text-emerald-600 rounded-full">
                           Good Lead
                         </span>
                       )}
-                      {lead.status !== 'Sale Done' && lead.status !== 'Not Dialed' && lead.status !== 'Good Lead' && (
+                      {lead.crm_status === 'BAD_LEAD' && (
+                        <span className="inline-block text-[10px] font-bold px-2.5 py-0.5 bg-red-50 text-red-600 rounded-full">
+                          Bad Lead
+                        </span>
+                      )}
+                      {!['SALE_DONE', 'DID_NOT_CONNECT', 'GOOD_LEAD_FOLLOW_UP', 'BAD_LEAD'].includes(lead.crm_status) && (
                         <span className="inline-block text-[10px] font-bold px-2.5 py-0.5 bg-indigo-50 text-indigo-600 rounded-full">
-                          {lead.status}
+                          {lead.crm_status || 'Unknown'}
                         </span>
                       )}
                     </td>
                     <td className="py-3.5 px-6 text-center text-slate-400">—</td>
                     <td className="py-3.5 px-6 text-center">
                       <span className="h-6 w-6 rounded-full bg-slate-100 text-slate-600 border border-slate-200/50 flex items-center justify-center mx-auto text-[10px] font-bold">
-                        {lead.leadOwner}
+                        {lead.lead_owner.charAt(0).toUpperCase()}
                       </span>
                     </td>
                     <td className="py-3.5 px-6 text-right">

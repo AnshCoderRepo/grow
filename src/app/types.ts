@@ -4,19 +4,22 @@ export interface RawCSVData {
 }
 
 export interface CRMLead {
-  id: string;
+  id: string; // Internal frontend usage
+  created_at: string;
   name: string;
   email: string;
-  phone: string;
+  country_code: string;
+  mobile_without_country_code: string;
   company: string;
-  jobTitle?: string;
-  source?: string;
-  status: 'New' | 'Contacted' | 'Qualified' | 'Unqualified' | 'Sale Done' | 'Not Dialed' | 'Good Lead';
-  quality: string;
-  leadOwner: string;
-  dateCreated: string;
-  estimatedValue?: string;
-  notes?: string;
+  city: string;
+  state: string;
+  country: string;
+  lead_owner: string;
+  crm_status: string; // 'GOOD_LEAD_FOLLOW_UP' | 'DID_NOT_CONNECT' | 'BAD_LEAD' | 'SALE_DONE'
+  crm_note: string;
+  data_source: string;
+  possession_time: string;
+  description: string;
 }
 
 export interface ImportSummary {

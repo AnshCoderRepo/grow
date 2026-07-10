@@ -11,7 +11,6 @@ import DashboardStats from '../components/DashboardStats';
 import LeadsTable from '../components/LeadsTable';
 import ImportModal from '../components/ImportModal';
 
-// Initial leads data matching the user's dashboard screenshot
 const INITIAL_LEADS: CRMLead[] = [];
 
 export default function Home() {
@@ -77,25 +76,34 @@ export default function Home() {
 
         {/* Dashboard Panels */}
         <div className="p-8 flex-1 flex flex-col gap-6 max-w-7xl w-full mx-auto">
-          <div>
-            <h2 className="text-2xl font-black text-slate-900 tracking-tight">Manage Your Leads</h2>
-            <p className="text-xs font-medium text-slate-400 mt-1">
-              Monitor lead status, assign tasks, and close deals faster.
-            </p>
-          </div>
+          {activeMenu === 'Manage Leads' ? (
+            <>
+              <div>
+                <h2 className="text-2xl font-black text-slate-900 tracking-tight">Manage Your Leads</h2>
+                <p className="text-xs font-medium text-slate-400 mt-1">
+                  Monitor lead status, assign tasks, and close deals faster.
+                </p>
+              </div>
 
-          {/* Quick Statistics Banner */}
-          <DashboardStats totalLeads={leads.length} />
+              {/* Quick Statistics Banner */}
+              <DashboardStats totalLeads={leads.length} />
 
-          {/* Leads Database Table Panel */}
-          <LeadsTable 
-            leads={leads}
-            searchQuery={searchQuery}
-            setSearchQuery={setSearchQuery}
-            newlyImportedIds={newlyImportedIds}
-            onReset={resetLeadsDatabase}
-            onLoadMore={handleLoadMoreLeads}
-          />
+              {/* Leads Database Table Panel */}
+              <LeadsTable 
+                leads={leads}
+                searchQuery={searchQuery}
+                setSearchQuery={setSearchQuery}
+                newlyImportedIds={newlyImportedIds}
+                onReset={resetLeadsDatabase}
+                onLoadMore={handleLoadMoreLeads}
+              />
+            </>
+          ) : (
+            <div className="flex flex-col items-center justify-center py-32 text-slate-400">
+              <h2 className="text-2xl font-bold text-slate-300 mb-2">Welcome to your Dashboard</h2>
+              <p className="text-sm">This page is currently under construction. Please use the Manage Leads tab.</p>
+            </div>
+          )}
         </div>
       </main>
 
