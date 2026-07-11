@@ -6,15 +6,24 @@ export const metadata: Metadata = {
   description: "Intelligently map and extract CRM lead records from any custom CSV layout using AI.",
 };
 
+import { ThemeProvider } from "../components/ThemeProvider";
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark bg-signal-base h-full antialiased" suppressHydrationWarning>
-      <body className="min-h-full flex flex-col">
-        {children}
+    <html lang="en" suppressHydrationWarning>
+      <body className="min-h-full flex flex-col bg-background text-foreground antialiased transition-colors">
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="dark"
+          enableSystem={false}
+          disableTransitionOnChange
+        >
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );

@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Upload, Info, FileText, Sparkles } from 'lucide-react';
+import { Upload, Info, FileText, Sparkles, FileSpreadsheet, AlertTriangle } from 'lucide-react';
 
 interface DropZoneProps {
   isDragging: boolean;
@@ -84,5 +84,3 @@ export default function DropZone({
     </div>
   );
 }
-// Helper to import AlertTriangle to prevent syntax errors
-import { AlertTriangle } from 'lucide-react';

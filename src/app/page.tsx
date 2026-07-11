@@ -11,6 +11,7 @@ import Sidebar from '../components/Sidebar';
 import DashboardStats from '../components/DashboardStats';
 import LeadsTable from '../components/LeadsTable';
 import ImportModal from '../components/ImportModal';
+import ThemeToggle from '../components/ThemeToggle';
 
 const INITIAL_LEADS: CRMLead[] = [];
 
@@ -62,6 +63,14 @@ export default function Home() {
     setSearchQuery('');
   };
 
+  const handleDeleteLead = (id: string) => {
+    setLeads(prev => {
+      const updated = prev.filter(lead => lead.id !== id);
+      localStorage.setItem('grow_leads', JSON.stringify(updated));
+      return updated;
+    });
+  };
+
   return (
     <div className="min-h-screen bg-background text-foreground flex font-sans antialiased overflow-x-hidden selection:bg-accent-lime selection:text-background">
       
@@ -78,13 +87,16 @@ export default function Home() {
             <span className="text-foreground">{activeMenu}</span>
           </div>
 
-          <button 
-            onClick={() => setShowImportModal(true)}
-            className="relative overflow-hidden animate-sweep flex items-center gap-2 px-4 py-2 bg-accent-lime text-background rounded-lg text-sm font-bold shadow-md shadow-accent-lime/20 hover:shadow-accent-lime/40 transition-all active:scale-95 cursor-pointer"
-          >
-            <Upload className="h-4 w-4" />
-            Import CSV
-          </button>
+          <div className="flex items-center gap-3">
+            <ThemeToggle />
+            <button 
+              onClick={() => setShowImportModal(true)}
+              className="relative overflow-hidden animate-sweep flex items-center gap-2 px-4 py-2 bg-accent-lime text-background rounded-lg text-sm font-bold shadow-md shadow-accent-lime/20 hover:shadow-accent-lime/40 transition-all active:scale-95 cursor-pointer"
+            >
+              <Upload className="h-4 w-4" />
+              Import CSV
+            </button>
+          </div>
         </header>
 
         {/* Dashboard Panels */}
@@ -113,6 +125,7 @@ export default function Home() {
                   setSearchQuery={setSearchQuery}
                   newlyImportedIds={newlyImportedIds}
                   onReset={resetLeadsDatabase}
+                  onDeleteLead={handleDeleteLead}
                 />
               </motion.div>
             ) : activeMenu === 'Dashboard' ? (
