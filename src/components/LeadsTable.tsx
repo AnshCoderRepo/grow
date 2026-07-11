@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Search, RefreshCw, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Search, RefreshCw, ChevronLeft, ChevronRight, Trash2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { CRMLead } from '../app/types';
 
@@ -11,7 +11,8 @@ interface LeadsTableProps {
   setSearchQuery: (query: string) => void;
   newlyImportedIds: Set<string>;
   onReset: () => void;
-  onLoadMore: () => void;
+  onDeleteLead?: (id: string) => void;
+  onLoadMore?: () => void;
 }
 
 export default function LeadsTable({
@@ -20,6 +21,7 @@ export default function LeadsTable({
   setSearchQuery,
   newlyImportedIds,
   onReset,
+  onDeleteLead,
 }: LeadsTableProps) {
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 10;
@@ -135,8 +137,8 @@ export default function LeadsTable({
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -8 }}
                       transition={{ duration: 0.2, delay: i * 0.04 }}
-                      className={`hover:bg-[#1C212D] border-l-2 transition-colors ${
-                        isNew ? 'bg-accent-lime/5 border-l-accent-lime' : 'border-l-transparent hover:border-l-accent-lime'
+                      className={`hover:bg-black/5 dark:hover:bg-white/5 border-l-2 transition-colors ${
+                        isNew ? 'bg-accent-lime/10 border-l-accent-lime' : 'border-l-transparent hover:border-l-accent-lime'
                       }`}
                     >
                       <td className="py-3.5 px-6 font-bold text-foreground flex items-center gap-2">
@@ -185,13 +187,25 @@ export default function LeadsTable({
                         </span>
                       </td>
                       <td className="py-3.5 px-6 text-right">
-                        <motion.button 
-                          whileHover={{ x: 3, color: 'var(--foreground)' }}
-                          whileTap={{ scale: 0.95 }}
-                          className="text-[11px] font-bold text-text-muted transition-colors cursor-pointer"
-                        >
-                          More &gt;
-                        </motion.button>
+                        <div className="flex items-center justify-end gap-3">
+                          <motion.button 
+                            whileHover={{ x: 3, color: 'var(--foreground)' }}
+                            whileTap={{ scale: 0.95 }}
+                            className="text-[11px] font-bold text-text-muted transition-colors cursor-pointer"
+                          >
+                            More &gt;
+                          </motion.button>
+                          
+                          {onDeleteLead && (
+                            <button
+                              onClick={() => onDeleteLead(lead.id)}
+                              className="text-text-muted hover:text-red-500 transition-colors p-1 rounded-md hover:bg-red-500/10 cursor-pointer"
+                              title="Delete lead"
+                            >
+                              <Trash2 className="h-4 w-4" />
+                            </button>
+                          )}
+                        </div>
                       </td>
                     </motion.tr>
                   );
