@@ -63,7 +63,7 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] text-slate-800 flex font-sans antialiased overflow-x-hidden selection:bg-teal-500 selection:text-white">
+    <div className="min-h-screen bg-background text-foreground flex font-sans antialiased overflow-x-hidden selection:bg-accent-lime selection:text-background">
       
       {/* Sidebar Navigation */}
       <Sidebar activeMenu={activeMenu} setActiveMenu={setActiveMenu} />
@@ -71,21 +71,20 @@ export default function Home() {
       {/* Main Panel Area */}
       <main className="flex-1 flex flex-col min-h-screen">
         {/* Top Navbar */}
-        <header className="h-16 bg-white border-b border-slate-200/80 flex items-center justify-between px-8 shrink-0">
-          <div className="flex items-center gap-2">
-            <span className="text-xs font-bold text-slate-400">Workspace</span>
-            <ChevronRight className="h-3 w-3 text-slate-300" />
-            <span className="text-xs font-bold text-slate-700">{activeMenu}</span>
+        <header className="h-16 bg-background border-b border-border-color flex items-center justify-between px-8 sticky top-0 z-20 shadow-sm transition-colors duration-300">
+          <div className="flex items-center text-sm font-semibold text-text-muted">
+            <span>GrowEasy</span>
+            <ChevronRight className="h-4 w-4 mx-2 text-text-muted opacity-50" />
+            <span className="text-foreground">{activeMenu}</span>
           </div>
-          <div className="flex items-center gap-3">
-            <button 
-              onClick={() => setShowImportModal(true)}
-              className="px-4 py-2 bg-[#F2994A] hover:bg-[#e0893a] text-white font-bold text-xs rounded-lg shadow-sm shadow-[#F2994A]/25 transition-all flex items-center gap-2 cursor-pointer"
-            >
-              <Upload className="h-3.5 w-3.5" />
-              Import CSV
-            </button>
-          </div>
+
+          <button 
+            onClick={() => setShowImportModal(true)}
+            className="relative overflow-hidden animate-sweep flex items-center gap-2 px-4 py-2 bg-accent-lime text-background rounded-lg text-sm font-bold shadow-md shadow-accent-lime/20 hover:shadow-accent-lime/40 transition-all active:scale-95 cursor-pointer"
+          >
+            <Upload className="h-4 w-4" />
+            Import CSV
+          </button>
         </header>
 
         {/* Dashboard Panels */}
@@ -101,8 +100,8 @@ export default function Home() {
                 className="flex flex-col gap-6 flex-1 h-full"
               >
                 <div>
-                  <h2 className="text-2xl font-black text-slate-900 tracking-tight">Manage Your Leads</h2>
-                  <p className="text-xs font-medium text-slate-400 mt-1">
+                  <h2 className="text-2xl font-black text-foreground tracking-tight">Manage Your Leads</h2>
+                  <p className="text-xs font-medium text-text-muted mt-1">
                     Search, filter, and track your imported leads across all channels.
                   </p>
                 </div>
@@ -126,8 +125,8 @@ export default function Home() {
                 className="flex flex-col gap-6 flex-1 h-full"
               >
                 <div>
-                  <h2 className="text-2xl font-black text-slate-900 tracking-tight">Executive Dashboard</h2>
-                  <p className="text-xs font-medium text-slate-400 mt-1">
+                  <h2 className="text-2xl font-black text-foreground tracking-tight">Executive Dashboard</h2>
+                  <p className="text-xs font-medium text-text-muted mt-1">
                     High-level metrics and performance overview of your CRM data.
                   </p>
                 </div>
@@ -136,8 +135,8 @@ export default function Home() {
                 <DashboardStats totalLeads={leads.length} />
                 
                 {/* Empty State for charts */}
-                <div className="flex-1 min-h-[300px] border border-slate-200/80 bg-white rounded-xl shadow-sm flex items-center justify-center">
-                  <div className="text-center text-slate-400">
+                <div className="flex-1 min-h-[300px] border border-border-color bg-surface rounded-xl shadow-sm flex items-center justify-center transition-colors">
+                  <div className="text-center text-text-muted">
                     <p className="font-bold mb-1">Visual Analytics Area</p>
                     <p className="text-xs">Charts will be populated here when conversion data syncs.</p>
                   </div>
@@ -149,9 +148,9 @@ export default function Home() {
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.95 }}
-                className="flex flex-col items-center justify-center py-32 text-slate-400 flex-1 h-full"
+                className="flex flex-col items-center justify-center py-32 text-text-muted flex-1 h-full"
               >
-                <h2 className="text-2xl font-bold text-slate-300 mb-2">Welcome to {activeMenu}</h2>
+                <h2 className="text-2xl font-bold text-foreground mb-2">Welcome to {activeMenu}</h2>
                 <p className="text-sm">This page is currently under construction. Please use the Dashboard or Manage Leads tab.</p>
               </motion.div>
             )}

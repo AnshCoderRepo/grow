@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useRef } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import Papa from 'papaparse';
 import { X, RefreshCw } from 'lucide-react';
 import { RawCSVData, CRMLead, ImportSummary } from '../../app/types';
@@ -180,7 +181,6 @@ export default function ImportModal({ isOpen, onClose, onImportComplete }: Impor
   };
 
   const handleClose = () => {
-    // Reset states
     setModalStep('upload');
     setFileName('');
     setFileSize('');
@@ -193,126 +193,134 @@ export default function ImportModal({ isOpen, onClose, onImportComplete }: Impor
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-fade-in">
-      <div className="bg-white w-full max-w-2xl rounded-2xl shadow-2xl overflow-hidden flex flex-col border border-slate-100 max-h-[90vh]">
-        
-        {/* Modal Header */}
-        <div className="px-8 pt-6 pb-4 border-b border-slate-100 flex items-start justify-between">
-          <div>
-            <h3 className="text-lg font-black text-slate-900 leading-tight">Import Leads via CSV</h3>
-            <p className="text-xs font-medium text-slate-400 mt-1">
-              Upload a CSV file to bulk import leads into your system.
-            </p>
-          </div>
-          <button 
-            onClick={handleClose}
-            className="p-1 rounded-lg hover:bg-slate-100 text-slate-400 hover:text-slate-600 transition-colors cursor-pointer"
-          >
-            <X className="h-5 w-5" />
-          </button>
-        </div>
-
-        {/* Modal Body */}
-        <div className="flex-1 overflow-y-auto px-8 py-6">
-          {modalStep === 'upload' && (
-            <DropZone 
-              isDragging={isDragging}
-              onDragOver={handleDragOver}
-              onDragLeave={handleDragLeave}
-              onDrop={handleDrop}
-              onBrowseClick={() => fileInputRef.current?.click()}
-              uploadError={uploadError}
-              downloadSampleTemplateFile={downloadSampleTemplateFile}
-            />
-          )}
-
-          {modalStep === 'preview' && rawData && (
-            <CSVPreview 
-              fileName={fileName}
-              fileSize={fileSize}
-              rawData={rawData}
-              mappings={mappings}
-              onMappingChange={handleMappingChange}
-              onRemoveFile={() => setModalStep('upload')}
-              showMappingEditor={showMappingEditor}
-              setShowMappingEditor={setShowMappingEditor}
-            />
-          )}
-
-          {modalStep === 'processing' && (
-            <Processing processingStage={processingStage} />
-          )}
-
-          {modalStep === 'summary' && importSummary && (
-            <Summary importSummary={importSummary} />
-          )}
-        </div>
-
-        {/* hidden file selector */}
-        <input 
-          type="file" 
-          ref={fileInputRef}
-          onChange={handleFileSelect}
-          accept=".csv"
-          className="hidden" 
+    <AnimatePresence>
+      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          onClick={handleClose}
+          className="absolute inset-0 bg-slate-900/40 dark:bg-slate-950/60 backdrop-blur-sm"
         />
 
-        {/* Modal Footer */}
-        <div className="px-8 py-5 border-t border-slate-100 bg-slate-50 flex items-center justify-end gap-3.5">
-          {modalStep === 'upload' && (
-            <>
-              <button 
-                onClick={handleClose}
-                className="px-6 py-2.5 border border-slate-200 hover:border-slate-300 rounded-lg text-xs font-bold text-slate-500 hover:text-slate-800 transition-all cursor-pointer bg-white"
-              >
-                Cancel
-              </button>
-              <button 
-                onClick={() => fileInputRef.current?.click()}
-                className="px-6 py-2.5 bg-[#F2994A] hover:bg-[#e0893a] text-white font-bold text-xs rounded-lg transition-all shadow-sm shadow-[#F2994A]/25 cursor-pointer"
-              >
-                Browse CSV File
-              </button>
-            </>
-          )}
-
-          {modalStep === 'preview' && (
-            <>
-              <button 
-                onClick={() => setModalStep('upload')}
-                className="px-6 py-2.5 border border-slate-200 hover:border-slate-300 rounded-lg text-xs font-bold text-slate-500 hover:text-slate-800 transition-all cursor-pointer bg-white"
-              >
-                Cancel
-              </button>
-              <button 
-                onClick={confirmCSVImport}
-                className="px-6 py-2.5 bg-[#F2994A] hover:bg-[#e0893a] text-white font-bold text-xs rounded-lg transition-all shadow-sm shadow-[#F2994A]/25 cursor-pointer"
-              >
-                Confirm Import
-              </button>
-            </>
-          )}
-
-          {modalStep === 'processing' && (
-            <button 
-              disabled
-              className="px-6 py-2.5 bg-slate-200 text-slate-400 font-bold text-xs rounded-lg transition-all cursor-not-allowed flex items-center gap-1.5"
-            >
-              <RefreshCw className="h-3.5 w-3.5 animate-spin" />
-              Processing...
-            </button>
-          )}
-
-          {modalStep === 'summary' && (
-            <button 
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95, y: 20 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          exit={{ opacity: 0, scale: 0.95, y: 20 }}
+          className="relative w-full max-w-2xl bg-surface rounded-2xl shadow-2xl border border-border-color overflow-hidden flex flex-col max-h-[90vh]"
+        >
+          <div className="flex items-center justify-between p-6 border-b border-border-color bg-surface z-10 sticky top-0">
+            <div>
+              <h2 className="text-xl font-black text-foreground tracking-tight">Import Leads Data</h2>
+              <p className="text-xs text-text-muted font-medium mt-1">Upload a CSV file from Facebook, Google Ads, or any custom CRM.</p>
+            </div>
+            <button
               onClick={handleClose}
-              className="px-6 py-2.5 bg-[#F2994A] hover:bg-[#e0893a] text-white font-bold text-xs rounded-lg transition-all shadow-sm shadow-[#F2994A]/25 cursor-pointer"
+              className="p-2 text-text-muted hover:text-foreground hover:bg-background rounded-lg transition-colors cursor-pointer"
             >
-              Done (View Leads)
+              <X className="h-5 w-5" />
             </button>
-          )}
-        </div>
+          </div>
+
+          <div className="flex-1 overflow-y-auto px-8 py-6">
+            {modalStep === 'upload' && (
+              <DropZone
+                isDragging={isDragging}
+                onDragOver={handleDragOver}
+                onDragLeave={handleDragLeave}
+                onDrop={handleDrop}
+                onBrowseClick={() => fileInputRef.current?.click()}
+                uploadError={uploadError}
+                downloadSampleTemplateFile={downloadSampleTemplateFile}
+              />
+            )}
+
+            {modalStep === 'preview' && rawData && (
+              <CSVPreview
+                fileName={fileName}
+                fileSize={fileSize}
+                rawData={rawData}
+                mappings={mappings}
+                onMappingChange={handleMappingChange}
+                onRemoveFile={() => setModalStep('upload')}
+                showMappingEditor={showMappingEditor}
+                setShowMappingEditor={setShowMappingEditor}
+              />
+            )}
+
+            {modalStep === 'processing' && (
+              <Processing processingStage={processingStage} />
+            )}
+
+            {modalStep === 'summary' && importSummary && (
+              <Summary importSummary={importSummary} />
+            )}
+          </div>
+
+          <input
+            type="file"
+            ref={fileInputRef}
+            onChange={handleFileSelect}
+            accept=".csv"
+            className="hidden"
+          />
+
+          <div className="px-8 py-5 border-t border-border-color bg-background/50 flex items-center justify-end gap-3.5">
+            {modalStep === 'upload' && (
+              <>
+                <button
+                  onClick={handleClose}
+                  className="px-6 py-2.5 border border-border-color hover:border-text-muted rounded-lg text-xs font-bold text-text-muted hover:text-foreground transition-all cursor-pointer bg-surface"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={() => fileInputRef.current?.click()}
+                  className="relative overflow-hidden animate-sweep px-6 py-2.5 bg-accent-lime hover:brightness-110 text-background font-bold text-xs rounded-lg transition-all shadow-sm shadow-accent-lime/20 hover:shadow-accent-lime/40 cursor-pointer"
+                >
+                  Browse CSV File
+                </button>
+              </>
+            )}
+
+            {modalStep === 'preview' && (
+              <>
+                <button
+                  onClick={() => setModalStep('upload')}
+                  className="px-6 py-2.5 border border-border-color hover:border-text-muted rounded-lg text-xs font-bold text-text-muted hover:text-foreground transition-all cursor-pointer bg-surface"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={confirmCSVImport}
+                  className="relative overflow-hidden animate-sweep px-6 py-2.5 bg-accent-lime hover:brightness-110 text-background font-bold text-xs rounded-lg transition-all shadow-sm shadow-accent-lime/20 hover:shadow-accent-lime/40 cursor-pointer"
+                >
+                  Confirm Import
+                </button>
+              </>
+            )}
+
+            {modalStep === 'processing' && (
+              <button
+                disabled
+                className="px-6 py-2.5 bg-surface text-text-muted font-bold text-xs rounded-lg transition-all cursor-not-allowed flex items-center gap-1.5"
+              >
+                <RefreshCw className="h-3.5 w-3.5 animate-spin" />
+                Processing...
+              </button>
+            )}
+
+            {modalStep === 'summary' && (
+              <button
+                onClick={handleClose}
+                className="relative overflow-hidden animate-sweep px-6 py-2.5 bg-accent-lime hover:brightness-110 text-background font-bold text-xs rounded-lg transition-all shadow-sm shadow-accent-lime/20 hover:shadow-accent-lime/40 cursor-pointer"
+              >
+                Done (View Leads)
+              </button>
+            )}
+          </div>
+        </motion.div>
       </div>
-    </div>
+    </AnimatePresence>
   );
 }

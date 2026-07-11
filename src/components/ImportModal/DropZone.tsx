@@ -26,27 +26,33 @@ export default function DropZone({
     <div className="space-y-6">
       {/* Dropzone Container */}
       <div 
-        onDragOver={onDragOver}
+        onDragOver={(e) => { e.preventDefault(); onDragOver(e); }}
         onDragLeave={onDragLeave}
         onDrop={onDrop}
         onClick={onBrowseClick}
-        className={`relative cursor-pointer overflow-hidden rounded-xl border border-dashed p-8 text-center transition-all flex flex-col items-center justify-center group ${
+        className={`relative cursor-pointer border-2 border-dashed rounded-xl p-10 flex flex-col items-center justify-center text-center transition-all ${
           isDragging 
-            ? 'border-emerald-500 bg-emerald-50/5' 
-            : 'border-slate-200 hover:border-slate-300 hover:bg-slate-50/50'
+            ? 'border-accent-lime bg-accent-lime/10' 
+            : 'border-border-color bg-surface hover:bg-background hover:border-accent-lime/50'
         }`}
       >
         {/* Icon */}
-        <div className="h-10 w-10 rounded-lg bg-emerald-50 border border-emerald-100 flex items-center justify-center mb-4 text-emerald-600 group-hover:scale-105 transition-transform">
-          <Upload className="h-5 w-5" />
+        <div className={`h-16 w-16 rounded-full flex items-center justify-center mb-4 transition-colors ${
+          isDragging ? 'bg-accent-lime/20 text-accent-lime' : 'bg-background text-text-muted shadow-sm shadow-black/10'
+        }`}>
+          <FileSpreadsheet className="h-8 w-8" />
         </div>
 
-        <h4 className="font-bold text-sm text-slate-800 mb-1">Drop your CSV file here</h4>
-        <p className="text-xs font-semibold text-slate-400 mb-4">or click to browse files</p>
+        <p className="text-sm font-bold text-foreground mb-1">
+          Drag and drop your CSV file here
+        </p>
+        <p className="text-xs text-text-muted mb-6">
+          or click to browse from your computer
+        </p>
 
         {/* Pill constraint */}
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-50 border border-slate-100 text-[10px] font-bold text-slate-500">
-          <Info className="h-3 w-3 text-slate-400" />
+        <div className="flex items-center gap-2 text-[10px] font-bold text-text-muted bg-background px-4 py-2 rounded-lg shadow-sm border border-border-color">
+          <Info className="h-3 w-3 text-text-muted" />
           Supported file: .csv (max 5MB)
         </div>
       </div>
