@@ -223,7 +223,6 @@ export default function ImportModal({ isOpen, onClose, onImportComplete }: Impor
               onBrowseClick={() => fileInputRef.current?.click()}
               uploadError={uploadError}
               downloadSampleTemplateFile={downloadSampleTemplateFile}
-              loadSampleCSV={loadSampleCSV}
             />
           )}
 
@@ -269,10 +268,10 @@ export default function ImportModal({ isOpen, onClose, onImportComplete }: Impor
                 Cancel
               </button>
               <button 
-                onClick={loadSampleCSV}
+                onClick={() => fileInputRef.current?.click()}
                 className="px-6 py-2.5 bg-[#F2994A] hover:bg-[#e0893a] text-white font-bold text-xs rounded-lg transition-all shadow-sm shadow-[#F2994A]/25 cursor-pointer"
               >
-                Upload File
+                Browse CSV File
               </button>
             </>
           )}

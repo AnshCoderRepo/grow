@@ -16,6 +16,7 @@ import {
   Terminal, 
   Settings 
 } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 interface SidebarProps {
   activeMenu: string;
@@ -55,19 +56,30 @@ export default function Sidebar({ activeMenu, setActiveMenu }: SidebarProps) {
         {/* MAIN CATEGORY */}
         <div>
           <span className="px-3 text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-2">Main</span>
-          <nav className="space-y-1">
+          <motion.nav 
+            className="space-y-1"
+            initial="hidden"
+            animate="visible"
+            variants={{
+              visible: { transition: { staggerChildren: 0.1 } }
+            }}
+          >
             {[
               { name: 'Dashboard', icon: LayoutDashboard },
-              { name: 'Generate Leads', icon: Megaphone },
               { name: 'Manage Leads', icon: Briefcase },
-              { name: 'Engage Leads', icon: MessageSquare }
             ].map(item => {
               const Icon = item.icon;
               const isActive = activeMenu === item.name;
               return (
-                <button
+                <motion.button
                   key={item.name}
                   onClick={() => setActiveMenu(item.name)}
+                  variants={{
+                    hidden: { opacity: 0, x: -10 },
+                    visible: { opacity: 1, x: 0 }
+                  }}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
                   className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-xs font-bold transition-all ${
                     isActive 
                       ? 'bg-[#EBF7F5] text-emerald-700' 
@@ -76,43 +88,10 @@ export default function Sidebar({ activeMenu, setActiveMenu }: SidebarProps) {
                 >
                   <Icon className={`h-4 w-4 ${isActive ? 'text-emerald-600' : 'text-slate-400'}`} />
                   {item.name}
-                </button>
+                </motion.button>
               );
             })}
-          </nav>
-        </div>
-
-        {/* CONTROL CENTER */}
-        <div>
-          <span className="px-3 text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-2">Control Center</span>
-          <nav className="space-y-1">
-            {[
-              { name: 'Team Members', icon: UserCheck },
-              { name: 'Lead Sources', icon: Globe },
-              { name: 'Ad Accounts', icon: Grid },
-              { name: 'WhatsApp Account', icon: MessageSquare },
-              { name: 'Tele Calling', icon: RefreshCw },
-              { name: 'CRM Fields', icon: Layers },
-              { name: 'API Center', icon: Terminal }
-            ].map(item => {
-              const Icon = item.icon;
-              const isActive = activeMenu === item.name;
-              return (
-                <button
-                  key={item.name}
-                  onClick={() => setActiveMenu(item.name)}
-                  className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-xs font-bold transition-all ${
-                    isActive 
-                      ? 'bg-[#EBF7F5] text-emerald-700' 
-                      : 'text-slate-500 hover:text-slate-800 hover:bg-slate-50'
-                  }`}
-                >
-                  <Icon className={`h-4 w-4 ${isActive ? 'text-emerald-600' : 'text-slate-400'}`} />
-                  {item.name}
-                </button>
-              );
-            })}
-          </nav>
+          </motion.nav>
         </div>
       </div>
 

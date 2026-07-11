@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { Users, TrendingUp, Globe, Sparkles } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 interface DashboardStatsProps {
   totalLeads: number;
@@ -16,11 +17,32 @@ export default function DashboardStats({ totalLeads }: DashboardStatsProps) {
   ];
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+    <motion.div 
+      className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4"
+      initial="hidden"
+      animate="visible"
+      variants={{
+        visible: { transition: { staggerChildren: 0.1 } }
+      }}
+    >
       {stats.map((stat, idx) => {
         const Icon = stat.icon;
         return (
-          <div key={idx} className="bg-white border border-slate-200/80 rounded-xl p-5 flex items-center justify-between shadow-sm">
+          <motion.div 
+            key={idx} 
+            variants={{
+              hidden: { opacity: 0, y: 20 },
+              visible: { opacity: 1, y: 0 }
+            }}
+            whileHover={{ 
+              scale: 1.03, 
+              rotateX: 2, 
+              rotateY: 2,
+              boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)" 
+            }}
+            transition={{ type: "spring", stiffness: 300, damping: 20 }}
+            className="bg-white border border-slate-200/80 rounded-xl p-5 flex items-center justify-between shadow-sm cursor-pointer"
+          >
             <div>
               <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block">{stat.label}</span>
               <span className="text-2xl font-black text-slate-900 block mt-1">{stat.val}</span>
@@ -29,9 +51,9 @@ export default function DashboardStats({ totalLeads }: DashboardStatsProps) {
             <div className={`h-11 w-11 rounded-lg flex items-center justify-center ${stat.color}`}>
               <Icon className="h-5 w-5" />
             </div>
-          </div>
+          </motion.div>
         );
       })}
-    </div>
+    </motion.div>
   );
 }

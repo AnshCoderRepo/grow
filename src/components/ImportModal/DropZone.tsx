@@ -11,7 +11,6 @@ interface DropZoneProps {
   onBrowseClick: () => void;
   uploadError: string | null;
   downloadSampleTemplateFile: () => void;
-  loadSampleCSV: () => void;
 }
 
 export default function DropZone({
@@ -21,8 +20,7 @@ export default function DropZone({
   onDrop,
   onBrowseClick,
   uploadError,
-  downloadSampleTemplateFile,
-  loadSampleCSV
+  downloadSampleTemplateFile
 }: DropZoneProps) {
   return (
     <div className="space-y-6">
@@ -34,12 +32,12 @@ export default function DropZone({
         onClick={onBrowseClick}
         className={`relative cursor-pointer overflow-hidden rounded-xl border border-dashed p-8 text-center transition-all flex flex-col items-center justify-center group ${
           isDragging 
-            ? 'border-emerald-500 bg-emerald-500/5' 
+            ? 'border-emerald-500 bg-emerald-50/5' 
             : 'border-slate-200 hover:border-slate-300 hover:bg-slate-50/50'
         }`}
       >
         {/* Icon */}
-        <div className="h-10 w-10 rounded-lg bg-emerald-55 border border-emerald-100 flex items-center justify-center mb-4 text-emerald-600 group-hover:scale-105 transition-transform">
+        <div className="h-10 w-10 rounded-lg bg-emerald-50 border border-emerald-100 flex items-center justify-center mb-4 text-emerald-600 group-hover:scale-105 transition-transform">
           <Upload className="h-5 w-5" />
         </div>
 
@@ -75,14 +73,6 @@ export default function DropZone({
         >
           <FileText className="h-3.5 w-3.5 text-slate-400" />
           Download Sample CSV Template
-        </button>
-        
-        <button
-          onClick={(e) => { e.stopPropagation(); loadSampleCSV(); }}
-          className="px-4 py-2 border border-emerald-200/60 bg-emerald-50 hover:bg-emerald-100/70 text-emerald-700 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer"
-        >
-          <Sparkles className="h-3.5 w-3.5 text-emerald-600" />
-          Load Demo Leads File (Instant Test)
         </button>
       </div>
     </div>

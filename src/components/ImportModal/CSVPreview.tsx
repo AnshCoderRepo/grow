@@ -26,14 +26,21 @@ export default function CSVPreview({
   setShowMappingEditor
 }: CSVPreviewProps) {
   const crmFields = [
-    { key: 'name', label: 'Lead Name', required: true },
-    { key: 'email', label: 'Email Address', required: true },
-    { key: 'phone', label: 'Phone Number', required: false },
-    { key: 'countryCode', label: 'Country Code', required: false },
-    { key: 'company', label: 'Company', required: false },
-    { key: 'status', label: 'CRM Status', required: false },
-    { key: 'leadOwner', label: 'Lead Owner', required: false },
-    { key: 'dateCreated', label: 'Date Created', required: false }
+    { key: 'created_at', label: 'created_at (Lead Date)', required: false },
+    { key: 'name', label: 'name (Lead Name)', required: false },
+    { key: 'email', label: 'email (Email)', required: false },
+    { key: 'country_code', label: 'country_code (Country Code)', required: false },
+    { key: 'mobile_without_country_code', label: 'mobile_without_country_code (Mobile)', required: false },
+    { key: 'company', label: 'company (Company)', required: false },
+    { key: 'city', label: 'city (City)', required: false },
+    { key: 'state', label: 'state (State)', required: false },
+    { key: 'country', label: 'country (Country)', required: false },
+    { key: 'lead_owner', label: 'lead_owner (Owner)', required: false },
+    { key: 'crm_status', label: 'crm_status (Status)', required: false },
+    { key: 'crm_note', label: 'crm_note (Notes/Remarks)', required: false },
+    { key: 'data_source', label: 'data_source (Source)', required: false },
+    { key: 'possession_time', label: 'possession_time (Possession)', required: false },
+    { key: 'description', label: 'description (Description)', required: false }
   ];
 
   return (
