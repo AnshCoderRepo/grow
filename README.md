@@ -53,24 +53,6 @@ GrowEasy CRM is a modern, lightweight customer relationship management (CRM) das
    npm run dev
    ```
 
-5. **Open the app**:
-   Navigate to [http://localhost:3000](http://localhost:3000) in your browser.
-
-### Docker Setup
-
-If you prefer using Docker, you can quickly spin up the application using Docker Compose:
-
-1. Create your `.env` file with `GEMINI_API_KEY`.
-2. Run the following command:
-   ```bash
-   docker-compose up -d --build
-   ```
-3. The app will be available at [http://localhost:3000](http://localhost:3000).
-
-To stop the container:
-```bash
-docker-compose down
-```
 
 ## 🧪 Testing
 
